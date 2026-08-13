@@ -24,6 +24,17 @@ In `.pre-commit-config.yaml` under the `repos:` section, add the following:
 
 (The original `check-json` hook should probably be removed in case it is already included.)
 
+File sets smaller than the batch size are checked inline; larger sets are checked in parallel, with one process per available CPU.
+Use `--jobs` to limit workers and `--batch-size` to control how many files each worker task receives:
+
+```yaml
+- repo: https://gitlab.com/bmares/check-json5
+  rev: v1.0.1
+  hooks:
+  - id: check-json5
+    args: [--jobs=4, --batch-size=32]
+```
+
 ## Credits
 
 The actual code this hook was written by [@asottile and various contributors to the official pre-commit-hooks repository](https://github.com/pre-commit/pre-commit-hooks/commits/master/pre_commit_hooks/check_json.py). The current author (Ben Mares) replaced the `json` library with `json5` and published it as a separate hook.
